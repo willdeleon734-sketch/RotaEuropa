@@ -1,0 +1,36 @@
+ROTA EUROPA — pacote pronto para GitHub
+
+FLUXO:
+index.html
+  -> cadastro-pagamento-rota-europa.html
+  -> confirmação de acesso
+  -> curso-rota-europa.html
+
+INCLUÍDO:
+- sparn-config.js original enviado
+- sparn-auth.js original enviado
+- páginas do Rota Europa
+- assets utilizados pelas páginas
+
+PREÇO ATUAL:
+R$ 11,11 (definido no sparn-config.js)
+
+CUPONS PREVISTOS NA INTERFACE:
+EURO50  = 50%
+EURO100 = 100%
+
+ATENÇÃO:
+A interface envia o cupom para a Edge Function create-pix.
+Para os descontos serem seguros e funcionarem de verdade, a função create-pix
+do Supabase precisa validar EURO50/EURO100 no servidor.
+
+O arquivo sparn-auth.js atual considera acesso liberado quando:
+profiles.access_status == "active"
+
+Portanto, o acesso atual é GLOBAL no mesmo projeto Supabase.
+Este pacote não altera sua tabela nem sua Edge Function existente.
+
+SEGURANÇA:
+A anon/publishable key do Supabase pode existir no frontend quando as políticas RLS
+estão configuradas corretamente. Nunca coloque service_role key ou access token
+secreto do Mercado Pago no GitHub/frontend.
