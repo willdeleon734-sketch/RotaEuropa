@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rota Europa — Instituto TECA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"DM Sans",sans-serif;color:#f4fff9}
+body{
+  min-height:100vh;
+  background:
+    linear-gradient(90deg,rgba(2,13,12,.92) 0%,rgba(2,13,12,.72) 40%,rgba(2,13,12,.25) 70%,rgba(2,13,12,.42) 100%),
+    linear-gradient(0deg,rgba(2,12,10,.68),rgba(2,12,10,.08) 55%),
+    url("assets/rota-europa-background.png") center/cover fixed no-repeat;
+}
+a{color:inherit}
+.shell{width:min(1180px,92%);margin:auto}
+nav{height:84px;display:flex;align-items:center;justify-content:space-between}
+.brand{font:700 19px "Space Grotesk";letter-spacing:.04em}
+.brand span{color:#91f1ad}
+.login{padding:10px 16px;border:1px solid #ffffff42;border-radius:999px;text-decoration:none;background:#0614117d;backdrop-filter:blur(10px)}
+.hero{min-height:calc(100vh - 84px);display:flex;align-items:center;padding:44px 0 90px}
+.content{max-width:690px}
+.eyebrow{display:inline-flex;padding:8px 12px;border:1px solid #9af5b857;background:#0b2b20b8;border-radius:999px;color:#a5f6bd;font-size:12px;font-weight:700;letter-spacing:.12em}
+h1{font:700 clamp(52px,8vw,100px)/.88 "Space Grotesk";letter-spacing:-.055em;margin:22px 0 18px}
+h1 em{font-style:normal;color:#91efa9}
+.lead{font-size:clamp(18px,2vw,22px);line-height:1.55;color:#e2eee7;max-width:650px;text-shadow:0 2px 16px #000}
+.learn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:27px 0}
+.card{padding:14px 15px;background:#061713b8;border:1px solid #ffffff20;border-radius:14px;backdrop-filter:blur(10px);font-size:14px;line-height:1.35}
+.card b{display:block;color:#9af3b2;margin-bottom:3px}
+.actions{display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin-top:29px}
+.cta{display:inline-flex;align-items:center;gap:12px;padding:16px 22px;border-radius:14px;text-decoration:none;background:#91efa9;color:#06120d;font-weight:800;box-shadow:0 12px 40px #54dc7b42;transition:.2s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 17px 50px #54dc7b62}
+.cta i{font-style:normal;font-size:20px}
+.note{font-size:13px;color:#bed0c5}
+@media(max-width:720px){
+ body{background-position:58% center}
+ nav{height:70px}.hero{min-height:calc(100vh - 70px);align-items:flex-end;padding-bottom:55px}
+ .content{background:linear-gradient(180deg,transparent,#03100dd9 14%,#03100df2);margin-inline:-4%;padding:45px 4% 10px}
+ .learn{grid-template-columns:1fr}h1{font-size:58px}
+}
+
+.ad-cover{
+  width:min(760px,100%);
+  margin:0 0 24px;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid #ffffff30;
+  background:#061713b8;
+  box-shadow:0 24px 70px rgba(0,0,0,.42);
+}
+.ad-cover img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
+}
+@media(min-width:1000px){
+  .content{max-width:760px}
+}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<nav>
+  <div class="brand">INSTITUTO <span>TECA</span></div>
+  <a class="login" href="login.html">Já tenho acesso →</a>
+</nav>
+
+<main class="hero">
+<section class="content">
+  <div class="ad-cover">
+    <img src="assets/rota-europa-capa-anuncio.png" alt="Rota Europa — inspiração para viajar pela Europa">
+  </div>
+  <div class="eyebrow">ESTUDO • TRABALHO • VIAGEM • FUTURO</div>
+  <h1>Sua rota para a <em>Europa.</em></h1>
+  <p class="lead">Transforme o sonho de viver uma experiência na Europa em um plano real. Aprenda a pesquisar destinos, organizar documentos, encontrar caminhos de estudo e trabalho e preparar sua vida financeira para dar o próximo passo com mais clareza.</p>
+
+  <div class="learn">
+    <div class="card"><b>🌍 Planejamento</b>Escolha país e cidade de acordo com seus objetivos e realidade.</div>
+    <div class="card"><b>🛂 Documentação</b>Entenda vistos, entrada, permanência e organização dos documentos.</div>
+    <div class="card"><b>🎓 Estudo & bolsas</b>Pesquise universidades, intercâmbios, Erasmus+ e candidaturas.</div>
+    <div class="card"><b>💼 Trabalho</b>Prepare currículo, encontre oportunidades e entenda o trabalho legal.</div>
+    <div class="card"><b>💶 Vida financeira</b>Planeje reserva, moradia, transporte e custo de vida.</div>
+    <div class="card"><b>🧭 Meu Plano Europa</b>Termine o curso com sua própria rota de ação estruturada.</div>
+  </div>
+
+  <div class="actions">
+    <a class="cta" href="cadastro-pagamento-rota-europa.html"><span>COMEÇAR MINHA ROTA</span><i>→</i></a>
+    <span class="note">6 módulos • 24 aulas • projeto final</span>
+  </div>
+</section>
+</main>
+</div>
+</body>
+</html>

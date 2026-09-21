@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inscrição — Rota Europa</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="sparn-config.js"></script><script src="sparn-auth.js"></script>
+<style>
+:root{--g:#91efa9;--bg:#04110d;--card:#071b15;--line:#ffffff1f;--muted:#b7c9bf}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(#03100db8,#03100ded),url("assets/rota-europa-background.png") center/cover fixed;color:#f5fff9;font-family:Arial,sans-serif}
+.wrap{width:min(980px,92%);margin:auto;padding:32px 0 70px}.brand{font-weight:900;letter-spacing:.08em}.brand span{color:var(--g)}
+.grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;margin-top:40px}.card{background:#061713e8;border:1px solid var(--line);border-radius:22px;padding:26px;backdrop-filter:blur(16px)}
+h1{font-size:clamp(38px,6vw,66px);line-height:.95;margin:.25em 0}h2{margin-top:0}.muted{color:var(--muted);line-height:1.55}
+label{display:block;font-weight:800;margin:15px 0 6px}input{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:#07130f;color:white;font-size:16px}
+button{border:0;border-radius:12px;padding:14px 18px;font-weight:900;cursor:pointer;background:var(--g);color:#04110d}button.alt{background:#ffffff12;color:#fff;border:1px solid var(--line)}
+.status{padding:13px;border-radius:12px;background:#ffffff0b;margin:14px 0}.ok{color:var(--g)}.price{font-size:42px;font-weight:900}.old{text-decoration:line-through;color:#8fa097;font-size:18px}.coupon{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.row{display:flex;gap:8px}.row input{flex:1}.couponmsg{font-size:13px;margin-top:8px;min-height:18px}.hide{display:none}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style></head>
+<body><div class="wrap"><div class="brand">INSTITUTO <span>TECA</span> · ROTA EUROPA</div>
+<div class="grid">
+<section><div style="color:#91efa9;font-weight:900">SUA JORNADA COMEÇA AQUI</div><h1>Crie seu acesso.</h1>
+<p class="muted">Cadastre-se, faça o pagamento via PIX e, assim que a confirmação chegar, seu acesso ao Rota Europa será liberado automaticamente.</p>
+<div class="card"><b>Seu acesso inclui</b><p class="muted">6 módulos · 24 aulas · planejamento de viagem, documentação, estudo, trabalho, dinheiro, moradia e o projeto final Meu Plano Europa.</p></div></section>
+<section class="card">
+<div id="registerBox">
+<h2>1. Cadastro</h2><label>Nome</label><input id="name" autocomplete="name"><label>E-mail</label><input id="email" type="email" autocomplete="email"><label>Senha</label><input id="password" type="password" minlength="6" autocomplete="new-password">
+<p><button id="register">CRIAR MEU ACESSO →</button></p><div id="regStatus" class="status">Já possui conta? <a href="login.html?next=pagamento-rota-europa.html">Entrar</a></div>
+</div>
+<div id="paymentBox" class="hide">
+<h2>2. Pagamento via PIX</h2><div id="priceBox"><div class="price">R$ 11,11</div></div>
+<p class="muted">O pagamento é reconhecido automaticamente pelo mesmo sistema de acesso da plataforma.</p>
+<div id="pixArea"><button id="createPix">GERAR MEU PIX</button></div>
+<div class="coupon">
+<label for="coupon">Tem um cupom?</label><div class="row"><input id="coupon" placeholder="Digite seu cupom" autocomplete="off"><button class="alt" id="applyCoupon">Aplicar</button></div><div id="couponMsg" class="couponmsg"></div>
+</div>
+<div id="payStatus" class="status">Aguardando geração do pagamento.</div><button class="alt" id="check">Já paguei — verificar</button>
+</div></section></div></div>
+<script>
+let timer, discount=0, appliedCoupon="";
+const BASE=11.11;
+function money(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function renderPrice(){
+ const total=Math.max(0,BASE*(1-discount));
+ priceBox.innerHTML=(discount?'<div class="old">'+money(BASE)+'</div>':'')+'<div class="price">'+(total===0?'GRÁTIS':money(total))+'</div>';
+}
+async function showPayment(){registerBox.classList.add("hide");paymentBox.classList.remove("hide");renderPrice()}
+async function verify(){if(await SparnAuth.access()){payStatus.innerHTML='<b class="ok">✓ Acesso confirmado! Entrando no curso…</b>';clearInterval(timer);setTimeout(()=>location.href="curso-rota-europa.html",900);return true}return false}
+(async()=>{try{const u=await SparnAuth.user();if(u){showPayment();verify()}}catch(e){}})();
+
+register.onclick=async()=>{
+ regStatus.textContent="Criando seu acesso…";
+ try{
+   const client=await SparnAuth.init();
+   const {data,error}=await client.auth.signUp({email:email.value.trim(),password:password.value,options:{data:{name:name.value.trim(),course:"rota-europa"}}});
+   if(error)throw error;
+   regStatus.innerHTML='<b class="ok">✓ Cadastro criado.</b>';
+   if(data.session)showPayment(); else regStatus.textContent="Cadastro criado. Confirme seu e-mail e depois entre para continuar.";
+ }catch(e){regStatus.textContent=e.message}
+};
+
+applyCoupon.onclick=async()=>{
+ const c=coupon.value.trim().toLowerCase();
+ if(c==="euro100"){discount=1;appliedCoupon="euro100";couponMsg.innerHTML='<b class="ok">✓ EURO100 aplicado — 100% de desconto.</b>';renderPrice();pixArea.innerHTML='<button id="freeAccess">LIBERAR MEU ACESSO</button>';document.getElementById("freeAccess").onclick=activateFree}
+ else if(c==="euro50"){discount=.5;appliedCoupon="euro50";couponMsg.innerHTML='<b class="ok">✓ EURO50 aplicado — 50% de desconto.</b>';renderPrice();pixArea.innerHTML='<button id="createPix">GERAR PIX COM DESCONTO</button>';document.getElementById("createPix").onclick=createPayment}
+ else {discount=0;appliedCoupon="";couponMsg.textContent="Cupom inválido.";renderPrice();pixArea.innerHTML='<button id="createPix">GERAR MEU PIX</button>';document.getElementById("createPix").onclick=createPayment}
+};
+
+async function requestBackend(payload){
+ const cfg=window.SPARN_CONFIG, client=await SparnAuth.init(), s=await client.auth.getSession();
+ const r=await fetch(cfg.createPixEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+s.data.session.access_token},body:JSON.stringify(payload)});
+ const d=await r.json(); if(!r.ok)throw new Error(d.error||"Falha ao processar"); return d;
+}
+async function activateFree(){
+ payStatus.textContent="Validando cupom…";
+ try{
+   const d=await requestBackend({plan:"rota-europa",coupon:"euro100"});
+   if(d.access_granted){payStatus.innerHTML='<b class="ok">✓ Cupom validado. Acesso liberado!</b>';setTimeout(()=>location.href="curso-rota-europa.html",700)}
+   else {payStatus.textContent=d.message||"O backend precisa validar e liberar o cupom EURO100."}
+ }catch(e){payStatus.textContent=e.message}
+}
+async function createPayment(){
+ payStatus.textContent="Gerando PIX…";
+ try{
+   const d=await requestBackend({plan:"rota-europa",coupon:appliedCoupon||null});
+   pixArea.innerHTML=(d.qr_code_base64?'<img alt="QR Code PIX" style="display:block;width:min(280px,100%);margin:12px auto;border-radius:18px" src="data:image/png;base64,'+d.qr_code_base64+'">':'')+'<label>PIX Copia e Cola</label><input id="pixCode" readonly value="'+(d.qr_code||'')+'"><p><button id="copyPix">Copiar código PIX</button></p>';
+   document.getElementById("copyPix").onclick=()=>navigator.clipboard.writeText(document.getElementById("pixCode").value);
+   payStatus.textContent="PIX criado. Aguardando confirmação automática…";timer=setInterval(verify,3000);
+ }catch(e){payStatus.textContent=e.message}
+}
+document.getElementById("createPix").onclick=createPayment;
+check.onclick=verify;
+</script></body></html>
